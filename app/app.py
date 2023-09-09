@@ -10,16 +10,19 @@ model = load_model("../server/model/model.h5")
 
 # preprocess image before inference
 def preprocess_image(image_data):
-    # resize image to fit input size of model
+    # Resize image to fit the input size of the model
     img = image.load_img(image_data, target_size=(256, 256))
 
-    # convert the image to a numpy array
+    # Convert the image to a numpy array
     img_array = image.img_to_array(img)
 
-    # add a batch dimension
-    img_array = np.expand_dims(img_array, axis=0)
+    # Expand dimensions to create a batch of one image
+    img_batch = np.expand_dims(img_array, axis=0)
 
-    return img_array
+    # Normalize pixel values to [0, 1]
+    img_batch /= 255.0
+
+    return img_batch
 
 
 # set up Streamlit app
@@ -39,16 +42,21 @@ def main():
         # preprocess image for prediction
         processed_image = preprocess_image(uploaded_image)
 
+        print("Processed image is:")
+        print(processed_image)
+
         # get prediction
         prediction = model.predict(processed_image)
 
         # define tumor category labels
         categories = [
-            "No Tumor",
             "Category 1 Tumor",
             "Category 2 Tumor",
             "Category 3 Tumor",
+            "No Tumor",
         ]
+
+        print(f"The predicted category is {np.argmax(prediction)}")
 
         # get predicted category
         predicted_category = categories[np.argmax(prediction)]
