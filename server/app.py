@@ -1,9 +1,12 @@
+# imports
+
 from flask import Flask, request, jsonify
 from tensorflow.keras.models import load_model
 import numpy as np
 from PIL import Image
 from io import BytesIO
 
+# initialize Flask app
 app = Flask(__name__)
 
 # load model
@@ -33,12 +36,16 @@ def predict():
             # return top class (if model outputs class probabilities)
             top_class_index = np.argmax(predictions)
 
+            print(f"top_class_index is {top_class_index}")
+
             # customizable response format
             response = {
                 "class_id": top_class_index,
                 "class_label": "Class Label",  # Replace with your class labels
                 "confidence": float(predictions[0][top_class_index]),
             }
+
+            print(f"response is {response}")
 
             return jsonify(response)
         else:
@@ -47,5 +54,6 @@ def predict():
         return jsonify({"error": str(e)}), 500
 
 
+# serve Flask app
 if __name__ == "__main__":
     app.run(debug=True)
