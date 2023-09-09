@@ -1,18 +1,25 @@
 # imports
 import streamlit as st
 from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image
 import numpy as np
-from PIL import Image
 
 # load pre-trained CNN model
 model = load_model("../server/model/model.h5")
 
 
 # preprocess image before inference
-def preprocess_image(image):
+def preprocess_image(image_data):
     # resize image to fit input size of model
-    image = image.resize((256, 256))
-    return image
+    img = image.load_img(image_data, target_size=(256, 256))
+
+    # convert the image to a numpy array
+    img_array = image.img_to_array(img)
+
+    # add a batch dimension
+    img_array = np.expand_dims(img_array, axis=0)
+
+    return img_array
 
 
 # set up Streamlit app
@@ -30,16 +37,24 @@ def main():
         st.image(uploaded_image, caption="Uploaded MRI Image", use_column_width=True)
 
         # preprocess image for prediction
-        processed_image = preprocess_image(Image.open(uploaded_image))
+        processed_image = preprocess_image(uploaded_image)
 
         # get prediction
         prediction = model.predict(processed_image)
 
+        # define tumor category labels
+        categories = [
+            "No Tumor",
+            "Category 1 Tumor",
+            "Category 2 Tumor",
+            "Category 3 Tumor",
+        ]
+
+        # get predicted category
+        predicted_category = categories[np.argmax(prediction)]
+
         # display classification results
-        if prediction[0][0] > 0.5:
-            st.error("Tumor Detected")
-        else:
-            st.success("No Tumor Detected")
+        st.success(f"Predicted Tumor Category: {predicted_category}")
 
 
 if __name__ == "__main__":
