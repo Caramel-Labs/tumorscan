@@ -4,6 +4,8 @@
 
 TumorScan is a web app for medical students and professionals to easily and quickly check brain MRI scans for the presence of tumors, and classifies the type of tumor found in the scans.
 
+Deployed app: https://tumorscan.streamlit.app/
+
 ## The Data
 
 TumorScan uses a deep learning model trained on a dataset of 3000 images of brain MRI scans from 4 different categories:
