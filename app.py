@@ -28,11 +28,12 @@ def preprocess_image(image_data):
 # set up Streamlit app
 def main():
     st.title("TumorScan 🧠")
+
     st.markdown(
         "TumorScan helps you identify and classify brain tumors from MRI scans."
     )
 
-    st.image("icon.png")
+    st.image("./assets/icon.png")
 
     # create file uploader widget
     uploaded_image = st.file_uploader(
