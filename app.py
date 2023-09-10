@@ -10,16 +10,16 @@ model = load_model("./model/model.h5")
 
 # preprocess image before inference
 def preprocess_image(image_data):
-    # Resize image to fit the input size of the model
+    # resize image to fit input size of model
     img = image.load_img(image_data, target_size=(256, 256))
 
-    # Convert the image to a numpy array
+    # convert image to numpy array
     img_array = image.img_to_array(img)
 
-    # Expand dimensions to create a batch of one image
+    # expand dimensions to create batch of one image (as model has been trained on batches)
     img_batch = np.expand_dims(img_array, axis=0)
 
-    # Normalize pixel values to [0, 1]
+    # normalize pixel values to [0, 1]
     img_batch /= 255.0
 
     return img_batch
