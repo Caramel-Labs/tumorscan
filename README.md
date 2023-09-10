@@ -15,6 +15,8 @@ TumorScan uses a deep learning model trained on a dataset of 3000 images of brai
 
 <img src="./data/train/category2_tumor/mt_img (162).jpg">
 
+This dataset was created by <a href="https://rootcodelabs.com/">Rootcode Labs</a>.
+
 ## The Model
 
 TumorScan uses a Convolutional Neural Network (CNN) comprised of 50+ layers and over 4 million parameters for inference. The architecture of this model has been inspired by pre-trained models such as ResNet-52, which are often used in transfer learning.
