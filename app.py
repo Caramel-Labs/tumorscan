@@ -27,12 +27,16 @@ def preprocess_image(image_data):
 
 # set up Streamlit app
 def main():
-    st.title("TumorScan")
-    st.markdown("Upload an MRI image for tumor classification.")
+    st.title("TumorScan 🧠")
+    st.markdown(
+        "TumorScan helps you identify and classify brain tumors from MRI scans."
+    )
+
+    st.image("icon.png")
 
     # create file uploader widget
     uploaded_image = st.file_uploader(
-        "Choose an MRI image...", type=["jpg", "jpeg", "png"]
+        "Upload an MRI scan to get started.", type=["jpg", "jpeg", "png"]
     )
 
     if uploaded_image is not None:
@@ -50,19 +54,28 @@ def main():
 
         # define tumor category labels
         categories = [
-            "Category 1 Tumor",
-            "Category 2 Tumor",
-            "Category 3 Tumor",
+            "Glioma",
+            "Meningioma",
+            "Pituitary Tumor",
             "No Tumor",
         ]
 
-        print(f"The predicted category is {np.argmax(prediction)}")
+        category_descriptions = [
+            "Gliomas are a type of brain tumor that originates in the glial cells, which support and protect nerve cells in the brain. They can vary in aggressiveness and symptoms depending on their location and grade. Treatment typically involves a combination of surgery, radiation therapy, and chemotherapy, tailored to the specific glioma type and stage.",
+            "Meningiomas are typically slow-growing tumors that originate from the meninges, the protective membranes surrounding the brain and spinal cord. They are the most common type of primary brain tumor and are often benign, though they can become malignant in some cases. Symptoms may vary depending on their size and location, but treatment options, including surgery and radiation therapy, are available for managing meningiomas.",
+            "Pituitary tumors are growths that develop in the pituitary gland, a crucial hormonal control center in the brain. They can disrupt hormone regulation, leading to a wide range of symptoms. Treatment options often include surgery, medication, or radiation therapy.",
+        ]
 
         # get predicted category
         predicted_category = categories[np.argmax(prediction)]
 
         # display classification results
-        st.success(f"Predicted Tumor Category: {predicted_category}")
+        if predicted_category == "No Tumor":
+            st.success("No tumors detected in MRI scan.")
+        else:
+            st.warning(
+                f"This MRI scan depicts a {predicted_category}. {category_descriptions[np.argmax(prediction)]}"
+            )
 
 
 if __name__ == "__main__":
